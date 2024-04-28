@@ -4,6 +4,7 @@ const app=express();
 require("dotenv").config();
 const dbConfig=require("./config/dbConfig")
 const userRoutes=require("./routes/userRoutes")
+const productRoutes=require("./routes/productRoutes")
 const PORT=process.env.PORT || 5000
 const cors=require("cors");
 
@@ -36,6 +37,7 @@ app.use(express.urlencoded({extended:false}))
 
 
 app.use("/api/users",userRoutes);
+app.use("/api/products",productRoutes);
 
 
 app.listen(PORT,()=>{

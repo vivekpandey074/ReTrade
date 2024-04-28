@@ -37,7 +37,7 @@ router.post("/register", async (req, res) => {
       
         res.send({
             success: false,
-            message: `$Server Error:{error.message}`,
+            message: `${error.message}`,
         })
     }
 })
@@ -84,7 +84,7 @@ router.post("/login",async(req,res)=>{
 
         res.send({
             success:false,
-            message: `Server Error:${err.message}`,
+            message: `Server:${err.message}`,
         })
     }
 

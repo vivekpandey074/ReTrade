@@ -3,12 +3,13 @@ import axios from 'axios'
     withCredentials: true,
     headers : {
        "authorization": `Bearer ${JSON.stringify(localStorage.getItem('token'))}`,
-       "Content-Type": "application/json"
+      //  "Content-Type": "application/json"
+        // 'Content-Type': 'multipart/form-data'
     }
 })
 
 
-
+//very very important make sure to add 'Content-Type':'multipart/form-data' while using file.
 
 
 

@@ -28,3 +28,16 @@ input:focus{
   display: block;
 
 }
+
+.glassy{
+  background: rgba(52, 118, 102, 0.21);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3.3px);
+  -webkit-backdrop-filter: blur(3.3px);
+  border: 1px solid rgba(52, 118, 102, 0.01);
+}
+
+.display{
+  display: block;
+}
