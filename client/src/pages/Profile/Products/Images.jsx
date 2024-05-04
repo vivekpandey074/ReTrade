@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { SetLoader } from "../../../redux/loaderSlice";
 import { ImageDelete, UploadProductImage } from "../../../../services/products";
@@ -15,6 +15,7 @@ export default function Images({
   const dispatch = useDispatch();
   const [images, setImages] = useState(selectedProduct.Images);
   const fileInputRef = useRef(null);
+  const { user } = useSelector((state) => state.users);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -47,7 +48,7 @@ export default function Images({
       if (response.success) {
         toast.success(response.message);
         setImages([...images, response.response.secure_url]);
-        getData();
+        getData(user);
       } else {
         toast.error(response.message);
       }
@@ -71,7 +72,7 @@ export default function Images({
 
       if (response.success) {
         setImages(response.response.Images);
-        getData();
+        getData(user);
       } else {
         toast.error(response.message);
       }

@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import axiosInstance  from "./axiosInstance";
 
 
@@ -77,4 +77,26 @@ export const RandomRouter=async()=>{
   catch(err){
     console.log(err);
   }
+}
+
+//get all users
+export const GetAllUsers=async ()=>{
+  try{
+    const response=await axiosInstance.get("/api/users/get-users");
+    return response.data;
+  
+  }catch(err){
+    return err.message;
+  }
+}
+
+export const UpdateUserStatus=async (id,status)=>{
+  try{
+      const response=await axiosInstance.put(`/api/users/update-user-status/${id}`,{status});
+      return response.data;
+
+  }catch(err){
+      return err.message;
+  }
+
 }

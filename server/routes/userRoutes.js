@@ -54,7 +54,11 @@ router.post("/login",async(req,res)=>{
         if(!user){
             throw new Error("User not found");
         }
-
+        
+        if(user.status!="active"){
+            throw new Error("The user account is blocked, please contact admin at admin@gmail.com");
+        }
+        
         //compare password
         const validPassword= await bcrypt.compare(
             req.body.password,
@@ -128,6 +132,42 @@ router.get("/getcurrentuser",authMiddleware,async (req,res)=>{
 
 
 
+
+router.get("/get-users",authMiddleware,async(req,res)=>{
+    try{
+    const users=await User.find();
+    res.send({
+        success:true,
+        message:"Users fetched successfully",
+        data:users,
+    })
+
+    }catch(err){
+        res.send({
+            success:false,
+            message:err.message
+        })
+
+    }
+})
+
+router.put("/update-user-status/:id",authMiddleware,async(req,res)=>{
+    try{
+     
+    await User.findByIdAndUpdate(req.params.id,req.body);
+
+    res.send({
+    success:true,
+    message:"User Status updated successfully",
+    })
+    
+    }catch(err){
+    res.send({
+        success:false,
+        message:err.message,
+    })
+    }
+})
 
 
 

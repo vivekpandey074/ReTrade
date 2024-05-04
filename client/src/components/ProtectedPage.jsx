@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { SetLoader } from "../redux/loaderSlice";
 import { SetUser } from "../redux/userSlice";
+import logo from "../assets/logo.png";
 
 export default function ProtectedPage({ children }) {
   const { user } = useSelector((state) => state.users);
@@ -53,15 +54,20 @@ export default function ProtectedPage({ children }) {
       <div>
         {user && (
           <div>
-            <nav className="bg-white border-gray-200 py-2.5 cursor-pointer dark:bg-gray-900">
-              <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
-                <a href="#" className="flex items-center">
+            <nav className="bg-white border-gray-200 py-2.5 cursor-pointer dark:bg-gray-900  ">
+              <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto ">
+                <a className="flex items-center">
                   <img
-                    src="https://www.svgrepo.com/show/499962/music.svg"
-                    className="h-6 mr-3 sm:h-9"
+                    src={logo}
+                    className="h-20 mr-3 sm:h-50"
                     alt="Landwind Logo"
                   />
-                  <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+                  <span
+                    onClick={() => {
+                      navigate("/");
+                    }}
+                    className="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
+                  >
                     ReTrade
                   </span>
                 </a>
@@ -79,8 +85,18 @@ export default function ProtectedPage({ children }) {
                   >
                     Logout
                   </a>
-                  <a className="text-white mx-3 bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800">
-                    {user.firstname}
+                  <a
+                    onClick={() => {
+                      if (user.role === "admin") {
+                        navigate("/admin");
+                      } else {
+                        navigate("/profile");
+                      }
+                    }}
+                    className="text-white mx-3 bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800"
+                  >
+                    {user.firstname.charAt(0).toUpperCase() +
+                      user.firstname.slice(1)}
                   </a>
                   <button
                     data-collapse-toggle="mobile-menu-2"

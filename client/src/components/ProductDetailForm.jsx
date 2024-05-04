@@ -16,8 +16,8 @@ const initialState = {
   Warranty: false,
   Box: false,
   Accessories: false,
-  Seller: "6627e8c8e9b46a75ae69e5c4",
-  Status: "pending",
+  // Seller: "6627e8c8e9b46a75ae69e5c4",
+  // Status: "pending",
 };
 
 export default function ProductDetailForm({
@@ -52,10 +52,12 @@ export default function ProductDetailForm({
 
   const handleProductFormSubmit = async (e) => {
     e.preventDefault();
-    setState(() => ({ ...state, Seller: user._id, Status: "pending" }));
+    const obj = { ...state, Seller: user._id, Status: "pending" };
+    setState(obj);
+
     try {
       dispatch(SetLoader(true));
-      const response = await AddProduct(state);
+      const response = await AddProduct(obj);
       dispatch(SetLoader(false));
       if (response.success) {
         toast.success(`Product added successfully.`);
@@ -72,6 +74,7 @@ export default function ProductDetailForm({
 
   const handleUpdateFormSubmit = async (e, product) => {
     e.preventDefault();
+    console.log(state);
 
     try {
       dispatch(SetLoader(true));

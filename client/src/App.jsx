@@ -9,6 +9,8 @@ import Spinner from "./components/Spinner";
 
 import { useSelector } from "react-redux";
 import Profile from "./pages/Profile/Profile";
+import Admin from "./pages/Admin/Admin";
+import ProductDetail from "./pages/ProductDetail/ProductDetail";
 
 function App() {
   const { loading } = useSelector((state) => state.loaders);
@@ -31,6 +33,22 @@ function App() {
               element={
                 <ProtectedPage>
                   <Profile />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/product/:id"
+              element={
+                <ProtectedPage>
+                  <ProductDetail />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedPage>
+                  <Admin />
                 </ProtectedPage>
               }
             />

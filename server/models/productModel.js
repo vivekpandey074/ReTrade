@@ -47,7 +47,7 @@ const productSchema=new mongoose.Schema({
     },
     Seller:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
+        ref:"users",
     },
     Status:{
         type:String,
@@ -58,6 +58,6 @@ const productSchema=new mongoose.Schema({
     timestamps:true,
 })
 
-const ProductSchema=mongoose.model("products",productSchema);
+const products=mongoose.model("products",productSchema);
 
-module.exports=ProductSchema;
+module.exports=products;

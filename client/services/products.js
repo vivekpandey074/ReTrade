@@ -11,9 +11,9 @@ export const AddProduct=async (payload)=>{
     }
 }
 
-export const GetAllProducts=async ()=>{
+export const GetAllProducts=async (filters)=>{
     try{ 
-        const response=await axiosInstance.get("/api/products/getproducts");
+        const response=await axiosInstance.post("/api/products/getproducts",filters);
         return response.data;
 
     }catch(err){
@@ -73,4 +73,27 @@ try {
 } catch (err) {
     return err.message
 }
+}
+
+
+export const UpdateProductStatus=async (id,Status)=>{
+    try{
+        const response=await axiosInstance.put(`/api/products/update-product-status/${id}`,{Status});
+        return response.data;
+
+    }catch(err){
+        return err.message;
+    }
+
+}
+
+export const GetProductById=async(id)=>{
+    try{
+        const response=await axiosInstance.get(`/api/products/get-product-by-id/${id}`)
+        return response.data;
+
+    }catch(err){
+        return err.message;
+    }
+
 }

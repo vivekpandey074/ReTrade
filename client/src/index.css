@@ -41,3 +41,7 @@ input:focus{
 .display{
   display: block;
 }
+
+.scrollable-element {
+  scrollbar-width: thin;
+}

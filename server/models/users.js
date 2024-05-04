@@ -38,6 +38,6 @@ profilePicture:{
 })
 
 
-const User=mongoose.model("users",userSchema);
+const users=mongoose.model("users",userSchema);
 
-module.exports=User;
+module.exports=users;

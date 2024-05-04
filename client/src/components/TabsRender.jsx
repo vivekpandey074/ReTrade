@@ -52,8 +52,8 @@ export default function TabsRender({ choice, columns, getData }) {
 
   return (
     <div>
-      <div className="relative h-full dark:bg-gray-600 border-4 border-sky-400 flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-        <div className="px-4 py-5 flex-auto border-4 border-red-500">
+      <div className="relative h-full dark:bg-gray-900  flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+        <div className="px-4 py-5 flex-auto ">
           <div className="tab-content tab-space">
             <div className="block" id="tab-profile">
               {choice === 1 ? <Products /> : <> </>}

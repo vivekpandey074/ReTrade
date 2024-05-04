@@ -7,6 +7,7 @@ const fs=require("fs");
 const path=require("path")
 router.post("/addproduct",authMiddleware,async (req,res)=>{
     try{
+        
          const newProduct=new Product(req.body);
          await newProduct.save();
          res.send({
@@ -22,16 +23,28 @@ router.post("/addproduct",authMiddleware,async (req,res)=>{
     }
 })
 
-router.get("/getproducts",authMiddleware,async (req,res)=>{
+router.post("/getproducts",async (req,res)=>{
+
     try{
-        const products=await Product.find().sort({createdAt:-1});
+        const {Status,Seller,Category=[],Age=[]}=req.body;
+       
+        let filters={}
+        if(Seller){
+            filters.Seller=Seller;
+        }
+        if(Status){
+            filters.Status=Status;
+        }
+        const products=await Product.find(filters).populate("Seller").sort({createdAt:-1});
+       
+   
         res.send({
             success:true,
             products,
         });
       
     }
-    catch(error){
+    catch(err){
       res.send({
         success:false,
         message:err.message,
@@ -66,6 +79,7 @@ router.put("/update/:id",authMiddleware,async(req,res)=>{
      
       const updatedProduct= await Product.findByIdAndUpdate(req.params.id,req.body,{ new: true });
       
+     
       if(!updatedProduct) throw new Error("Product not found!");
 
       res.send({
@@ -134,11 +148,11 @@ try {
         response,
     })
     
-} catch (error) {
+} catch (err) {
     fs.unlinkSync(req.file.path)// this will make sure once file get upload to cloudinary it get removed from serverlocalstorage
     res.send({
         success:false,
-        message:error.message
+        message:err.message
     })
     
 }
@@ -169,6 +183,50 @@ router.put("/deleteimage/:id",authMiddleware,async (req,res)=>{
         })
     }
 })
+
+
+
+
+//updating product status in admin
+
+router.put("/update-product-status/:id",authMiddleware,async (req,res)=>{
+  try{
+     const {Status}=req.body;
+     await Product.findByIdAndUpdate(req.params.id,{Status});
+     res.send({
+        success:true,
+        message:"Product status updated successfully."
+     })
+
+  }catch(err){
+   res.send({
+    success:false,
+    message:err.message,
+   })
+  }
+
+})
+
+
+//get a product by id
+router.get("/get-product-by-id/:id",async(req,res)=>{
+    try{
+        const product=await Product.findById(req.params.id).populate("Seller");
+        res.send({
+            success:true,
+            data:product,
+        })
+
+    }catch(err){
+        res.send({
+            success:false,
+            message:err.message
+        })
+
+    }
+})
+
+
 
 
 module.exports=router;
