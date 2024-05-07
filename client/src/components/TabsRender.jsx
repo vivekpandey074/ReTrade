@@ -9,6 +9,7 @@ import { SetLoader } from "../redux/loaderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { SetProducts } from "../redux/productSlice";
 import { useState } from "react";
+import AllBidsModal from "./AllBidsModal";
 
 const options = {
   year: "numeric", // e.g., 2024
@@ -24,6 +25,13 @@ export default function TabsRender({ choice, columns, getData }) {
   //below show product form is for updating button
   const [showProductForm, setShowProductForm] = useState(false);
   const [updateProductFormObj, setUpdateProductFormObj] = useState(null);
+  const [showBidModal, setShowBidModal] = useState(false);
+  const [currentSelectedProduct, setCurrentSelectedProduct] = useState(null);
+
+  let format = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
 
   const handleDelete = async (product) => {
     try {
@@ -87,7 +95,9 @@ export default function TabsRender({ choice, columns, getData }) {
                         {product.Name}
                       </th>
                       <td className="px-6 py-4">{product.Description}</td>
-                      <td className="px-6 py-4">{product.Price}</td>
+                      <td className="px-6 py-4">
+                        {format.format(product.Price)}
+                      </td>
                       <td className="px-6 py-4">{product.Category}</td>
                       <td className="px-6 py-4">{product.Age}</td>
                       <td className="px-6 py-4">{product.Status}</td>
@@ -112,6 +122,15 @@ export default function TabsRender({ choice, columns, getData }) {
                             style={{ cursor: "pointer" }}
                             onClick={() => handleDelete(product)}
                           />
+                          <span
+                            onClick={() => {
+                              setCurrentSelectedProduct(product);
+                              setShowBidModal(true);
+                            }}
+                            className="underline ml-2 cursor-pointer"
+                          >
+                            Show Bids
+                          </span>
                         </div>
                       </td>
                     </tr>
@@ -132,6 +151,11 @@ export default function TabsRender({ choice, columns, getData }) {
           />
         </>
       )}
+      <AllBidsModal
+        showBidModal={showBidModal}
+        setShowBidModal={setShowBidModal}
+        currentSelectedProduct={currentSelectedProduct}
+      />
     </div>
   );
 }

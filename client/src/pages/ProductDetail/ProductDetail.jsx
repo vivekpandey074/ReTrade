@@ -1,16 +1,32 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SetLoader } from "../../redux/loaderSlice";
-import { GetProductById } from "../../../services/products";
+import { GetAllBids, GetProductById } from "../../../services/products";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import defaultPoster from "../../assets/no-image.jpg";
+import BidModal from "../../components/BidModal";
+
+const options = {
+  year: "numeric", // e.g., 2024
+  month: "long", // e.g., April
+  day: "numeric", // e.g., 26
+  hour: "2-digit", // e.g., 07 AM/PM based on locale
+  minute: "2-digit", // e.g., 44
+};
 
 export default function ProductDetail() {
   const [product, SetProduct] = useState(null);
   const [index, setIndex] = useState(0);
+  const [showProductForm, setShowProductForm] = useState(false);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.users);
   const { id } = useParams();
+
+  let format = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
 
   const getData = async () => {
     try {
@@ -18,7 +34,9 @@ export default function ProductDetail() {
       const response = await GetProductById(id);
       dispatch(SetLoader(false));
       if (response.success) {
-        SetProduct(response.data);
+        const bidsReponse = await GetAllBids({ product: id });
+
+        SetProduct({ ...response.data, bids: bidsReponse.data });
       }
     } catch (err) {
       dispatch(SetLoader(false));
@@ -32,15 +50,15 @@ export default function ProductDetail() {
 
   return (
     <>
-      <section className="py-12 sm:py-16 ">
+      <section className="py-12 sm:py-12 ">
         <div className="container mx-auto px-4">
-          <div className="lg:col-gap-12 xl:col-gap-16 mt-2 grid grid-cols-1 gap-12 lg:mt-1 lg:grid-cols-5 lg:gap-16">
-            <div className="lg:col-span-3 lg:row-end-1">
+          <div className="lg:col-gap-12 xl:col-gap-16  grid grid-cols-1 gap-12  lg:grid-cols-5 lg:gap-16">
+            <div className="lg:col-span-3 lg:row-end-1 ">
               <div className="lg:flex lg:items-start">
-                <div className="lg:order-2 lg:ml-5 w-full h-72">
-                  <div className="max-w-xl h-72  overflow-hidden rounded-lg ">
+                <div className="lg:order-2 lg:ml-5 w-full h-95">
+                  <div className="max-w-xl h-95   overflow-hidden rounded-lg ">
                     <img
-                      className="h-full w-full max-w-full object-cover aspect-[4/3] bg-cover "
+                      className="h-full w-full max-w-full object-cover  aspect-[4/3] bg-cover"
                       src={
                         product?.Images[index]
                           ? product?.Images[index]
@@ -51,7 +69,7 @@ export default function ProductDetail() {
                   </div>
                 </div>
 
-                <div className="mt-2 w-full lg:order-1 lg:w-32 lg:flex-shrink-0 h-72 overflow-y-scroll scrollbar-hidden scrollable-element">
+                <div className="mt-2 w-full lg:order-1 lg:w-32 lg:flex-shrink-0 h-80 overflow-y-scroll  scrollable-element">
                   <div className="flex flex-row items-start lg:flex-col">
                     {product?.Images?.map((image, index) => {
                       return (
@@ -143,93 +161,71 @@ export default function ProductDetail() {
                 <p className="ml-2 text-sm font-medium text-gray-500">
                   1,209 Reviews
                 </p>
+                <p className="ml-2 text-sm font-medium text-gray-500">
+                  {"Added On: " +
+                    " " +
+                    new Date(product?.createdAt).toLocaleDateString(
+                      "en-US",
+                      options
+                    )}
+                </p>
               </div>
 
-              <h2 className="mt-8 text-base text-gray-900">Coffee Type</h2>
-              <div className="mt-3 flex select-none flex-wrap items-center gap-1">
-                <label className="">
-                  <input
-                    type="radio"
-                    name="type"
-                    value="Powder"
-                    className="peer sr-only"
-                    checked
-                  />
-                  <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                    Powder
-                  </p>
-                </label>
-                <label className="">
-                  <input
-                    type="radio"
-                    name="type"
-                    value="Whole Bean"
-                    className="peer sr-only"
-                  />
-                  <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                    Whole Bean
-                  </p>
-                </label>
-                <label className="">
-                  <input
-                    type="radio"
-                    name="type"
-                    value="Groud"
-                    className="peer sr-only"
-                  />
-                  <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                    Groud
-                  </p>
-                </label>
-              </div>
-
-              <h2 className="mt-8 text-base text-gray-900">
-                Choose subscription
-              </h2>
-              <div className="mt-3 flex select-none flex-wrap items-center gap-1">
-                <label className="">
-                  <input
-                    type="radio"
-                    name="subscription"
-                    value="4 Months"
-                    className="peer sr-only"
-                  />
-                  <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                    4 Months
-                  </p>
-                  <span className="mt-1 block text-center text-xs">$80/mo</span>
-                </label>
-                <label className="">
-                  <input
-                    type="radio"
-                    name="subscription"
-                    value="8 Months"
-                    className="peer sr-only"
-                    checked
-                  />
-                  <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                    8 Months
-                  </p>
-                  <span className="mt-1 block text-center text-xs">$60/mo</span>
-                </label>
-                <label className="">
-                  <input
-                    type="radio"
-                    name="subscription"
-                    value="12 Months"
-                    className="peer sr-only"
-                  />
-                  <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                    12 Months
-                  </p>
-                  <span className="mt-1 block text-center text-xs">$40/mo</span>
-                </label>
+              <h1 className="mt-8 text-base text-gray-900">
+                {product?.Description}
+              </h1>
+              <div className="mt-8 flow-root sm:mt-12">
+                <h1 className="text-3xl font-bold">Product Details</h1>
+                <div className="text-grey-900 mt-2">
+                  <div className="flex flex-row justify-between">
+                    <span>Category</span>
+                    <span>{product?.Category}</span>
+                  </div>
+                  <div className="flex flex-row justify-between">
+                    <span>Purchased Year</span>
+                    <span>{new Date().getFullYear() - product?.Age}</span>
+                  </div>
+                  <div className="flex flex-row justify-between">
+                    <span>Bill Available</span>
+                    <span>{product?.Bill ? "Yes" : "No"}</span>
+                  </div>
+                  <div className="flex flex-row justify-between">
+                    <span>Box Available</span>
+                    <span>{product?.Box ? "Yes" : "No"}</span>
+                  </div>
+                  <div className="flex flex-row justify-between">
+                    <span>Accessories Available</span>
+                    <span>{product?.Accessories ? "Yes" : "No"}</span>
+                  </div>
+                  <div className="flex flex-row justify-between">
+                    <span>Warranty Available</span>
+                    <span>{product?.Warranty ? "Yes" : "No"}</span>
+                  </div>
+                </div>
+                <h1 className="mt-8 text-3xl font-bold">Owner Details</h1>
+                <div className="text-grey-900 mt-2">
+                  <div className="flex flex-row justify-between">
+                    <span>Owner Name</span>
+                    <span>
+                      {product?.Seller.firstname.charAt(0).toUpperCase() +
+                        product?.Seller.firstname.slice(1).toLowerCase() +
+                        " " +
+                        product?.Seller.lastname.charAt(0).toUpperCase() +
+                        product?.Seller.lastname.slice(1).toLowerCase()}
+                    </span>
+                  </div>
+                  <div className="flex flex-row justify-between">
+                    <span>Email</span>
+                    <span>{product?.Seller.email}</span>
+                  </div>
+                </div>
               </div>
 
               <div className="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
                 <div className="flex items-end">
-                  <h1 className="text-3xl font-bold">$60.50</h1>
-                  <span className="text-base">/month</span>
+                  <h1 className="text-3xl font-bold">
+                    {format.format(product?.Price)}
+                  </h1>
                 </div>
 
                 <button
@@ -250,7 +246,7 @@ export default function ProductDetail() {
                       d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                     />
                   </svg>
-                  Add to cart
+                  Buy now
                 </button>
               </div>
 
@@ -295,8 +291,8 @@ export default function ProductDetail() {
               </ul>
             </div>
 
-            <div className="lg:col-span-3">
-              <div className="border-b border-gray-300">
+            <div className="lg:col-span-3  ">
+              <div className="border-b border-gray-300 ">
                 <nav className="flex gap-4">
                   <a
                     href="#"
@@ -304,7 +300,7 @@ export default function ProductDetail() {
                     className="border-b-2 border-gray-900 py-4 text-sm font-medium text-gray-900 hover:border-gray-400 hover:text-gray-800"
                   >
                     {" "}
-                    Description{" "}
+                    BIDS{" "}
                   </a>
 
                   <a
@@ -312,7 +308,7 @@ export default function ProductDetail() {
                     title=""
                     className="inline-flex items-center border-b-2 border-transparent py-4 text-sm font-medium text-gray-600"
                   >
-                    Reviews
+                    Comments
                     <span className="ml-2 block rounded-full bg-gray-500 px-2 py-px text-xs font-bold text-gray-100">
                       {" "}
                       1,209{" "}
@@ -321,29 +317,65 @@ export default function ProductDetail() {
                 </nav>
               </div>
 
-              <div className="mt-8 flow-root sm:mt-12">
-                <h1 className="text-3xl font-bold">Delivered To Your Door</h1>
-                <p className="mt-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia
-                  accusantium nesciunt fuga.
-                </p>
-                <h1 className="mt-8 text-3xl font-bold">
-                  From the Fine Farms of Brazil
-                </h1>
-                <p className="mt-4">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio
-                  numquam enim facere.
-                </p>
-                <p className="mt-4">
-                  Amet consectetur adipisicing elit. Optio numquam enim facere.
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Dolore rerum nostrum eius facere, ad neque.
-                </p>
+              <div className="mt-8 flow-root">
+                <div className="flex flex-row w-full justify-between">
+                  <h1 className="text-3xl font-bold">
+                    {product?.Seller._id === user._id
+                      ? "All bids for product"
+                      : "Place your bid for product"}
+                  </h1>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowProductForm(true)}
+                    className={`${
+                      product?.Seller._id === user._id ? "hidden" : ""
+                    } inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800`}
+                  >
+                    Place bid
+                  </button>
+                </div>
+                {/* bids */}
+                <div className="w-full mt-4 h-40 border-2 border-dashed border-black overflow-scroll no-scrollbar p-3">
+                  {product?.bids?.map((bid) => {
+                    return (
+                      <>
+                        <div className="w-full bg-[#f3f4f6] mt-2 h-20 bg-yellow-100 p-4 ">
+                          <div className="w-full flex flex-row justify-between">
+                            <p>
+                              {bid.buyer.firstname.charAt(0).toUpperCase() +
+                                bid.buyer.firstname.slice(1).toLowerCase() +
+                                " " +
+                                bid?.buyer.lastname.charAt(0).toUpperCase() +
+                                bid?.buyer.lastname.slice(1).toLowerCase()}
+                            </p>
+                            <p>{format.format(bid.Bid)}</p>
+                          </div>
+                          <div className="w-full flex flex-row justify-between">
+                            <p>Placed On</p>
+                            <p>
+                              {new Date(bid.createdAt).toLocaleDateString(
+                                "en-US",
+                                options
+                              )}
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+      <BidModal
+        showProductForm={showProductForm}
+        setShowProductForm={setShowProductForm}
+        product={product}
+        getData={getData}
+      />
     </>
   );
 }

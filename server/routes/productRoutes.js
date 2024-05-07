@@ -26,17 +26,106 @@ router.post("/addproduct",authMiddleware,async (req,res)=>{
 router.post("/getproducts",async (req,res)=>{
 
     try{
-        const {Status,Seller,Category=[],Age=[]}=req.body;
-       
+        const {Status,Seller,Category,Age,Price,SortOrder}=req.body;
+        
         let filters={}
+        let products=[];
+    
+      if(Age && Price){
+        let pipelineObj={}
+        let sortObj={
+            "$sort":{
+                'createdAt':-1,
+            }
+        }
+        switch (SortOrder) {
+        case "PriceOrderLTH":
+            sortObj= {
+                "$sort":{
+                    'Price':1,
+                }
+            }
+            break;
+       case "PriceOrderHTL":
+        sortObj={
+            "$sort":{
+                'Price':-1,
+            }
+        }
+        break;
+
+        case "AGE":
+            sortObj={
+                "$sort":{
+                    'Age':1,
+                }
+            }
+            break;
+        case "RECENT":
+            sortObj={
+                "$sort":{
+                    'createdAt':-1,
+                }
+            }
+
+        default:
+            break;
+       }
+        
+        
+       if(Category){ 
+       
+        pipelineObj=  {
+            '$match': {
+              'Category':Category,
+              'Age': {
+                '$lt': parseInt(Age)
+              }, 
+              'Price': {
+                '$lt': parseInt(Price)
+              }
+            },
+            
+          }
+      
+    }else{
+       
+        pipelineObj= {
+            '$match': {
+              'Age': {
+                '$lt': parseInt(Age),
+              }, 
+              'Price': {
+                '$lt': parseInt(Price),
+              }
+            },
+            
+          }
+
+
+    }
+    products=await Product.aggregate([pipelineObj,sortObj])
+   
+    
+   
+      }
+    //   This else block run on initial use Effect run , when age & price are not set,once user click on filter or use sort dropdown Price and age will be set and above if block will run
+      else{
+        if(Category){
+            filters.Category=Category;
+        }
+        
         if(Seller){
+            //profile page will request based on seller
             filters.Seller=Seller;
         }
         if(Status){
+            //home page will require only status "approved one"
             filters.Status=Status;
         }
-        const products=await Product.find(filters).populate("Seller").sort({createdAt:-1});
-       
+         products=await Product.find(filters).populate("Seller").sort({createdAt:-1});
+        
+      }
    
         res.send({
             success:true,
@@ -163,7 +252,7 @@ router.put("/deleteimage/:id",authMiddleware,async (req,res)=>{
     try{
        
       const newImageArray=req.body.slice(0, -1)
-      console.log(newImageArray)
+      
       const response=await Product.findByIdAndUpdate(req.params.id,{
         $set:{
             Images:newImageArray

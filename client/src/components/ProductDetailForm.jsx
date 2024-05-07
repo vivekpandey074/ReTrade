@@ -112,7 +112,7 @@ export default function ProductDetailForm({
                     handleProductFormSubmit(e);
                   }
             }
-            className="  w-full"
+            className="w-full"
           >
             <div className="mt-4 ">
               <label

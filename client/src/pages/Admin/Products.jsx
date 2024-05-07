@@ -26,6 +26,10 @@ const columns = [
 export default function Products({ getData }) {
   const { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  let format = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
 
   const onStatusUpdate = async (id, status) => {
     try {
@@ -79,8 +83,7 @@ export default function Products({ getData }) {
                       </td>
                       <td className="px-6 py-4">{product.Description}</td>
                       <td className="px-6 py-4">
-                        {"\u20B9"}
-                        {product.Price}
+                        {format.format(product.Price)}
                       </td>
                       <td className="px-6 py-4">{product.Category}</td>
                       <td className="px-6 py-4">{product.Age}</td>
