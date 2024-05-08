@@ -40,6 +40,7 @@ export default function Register() {
       dispatch(SetLoader(false));
       if (response.success) {
         toast.success(`User registered successfully.`);
+        navigate("/login");
       } else {
         throw new Error(response.message);
       }

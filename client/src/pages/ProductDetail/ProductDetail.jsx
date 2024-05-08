@@ -337,37 +337,41 @@ export default function ProductDetail() {
                 </div>
                 {/* bids */}
                 <div className="w-full mt-4 h-40 border-2 border-dashed border-black overflow-scroll no-scrollbar p-3">
-                  {product?.bids?.map((bid) => {
-                    return (
-                      <>
-                        <div className="w-full bg-[#f3f4f6] mt-2 h-auto bg-yellow-100 p-4 ">
-                          <div className="w-full flex flex-row justify-between">
-                            <p>
-                              {bid.buyer.firstname.charAt(0).toUpperCase() +
-                                bid.buyer.firstname.slice(1).toLowerCase() +
-                                " " +
-                                bid?.buyer.lastname.charAt(0).toUpperCase() +
-                                bid?.buyer.lastname.slice(1).toLowerCase()}
-                            </p>
-                            <p>{format.format(bid.Bid)}</p>
+                  {product?.bids.length > 0 ? (
+                    product?.bids?.map((bid) => {
+                      return (
+                        <>
+                          <div className="w-full bg-[#f3f4f6] mt-2 h-auto bg-yellow-100 p-4 ">
+                            <div className="w-full flex flex-row justify-between">
+                              <p>
+                                {bid.buyer.firstname.charAt(0).toUpperCase() +
+                                  bid.buyer.firstname.slice(1).toLowerCase() +
+                                  " " +
+                                  bid?.buyer.lastname.charAt(0).toUpperCase() +
+                                  bid?.buyer.lastname.slice(1).toLowerCase()}
+                              </p>
+                              <p>{format.format(bid.Bid)}</p>
+                            </div>
+                            <div className="w-full flex flex-row justify-between">
+                              <p>Placed On</p>
+                              <p>
+                                {new Date(bid.createdAt).toLocaleDateString(
+                                  "en-US",
+                                  options
+                                )}
+                              </p>
+                            </div>
+                            <div className="w-full flex flex-row justify-between">
+                              <p>Contact:</p>
+                              <p>{bid?.buyer.email}</p>
+                            </div>
                           </div>
-                          <div className="w-full flex flex-row justify-between">
-                            <p>Placed On</p>
-                            <p>
-                              {new Date(bid.createdAt).toLocaleDateString(
-                                "en-US",
-                                options
-                              )}
-                            </p>
-                          </div>
-                          <div className="w-full flex flex-row justify-between">
-                            <p>Contact:</p>
-                            <p>{bid?.buyer.email}</p>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
+                        </>
+                      );
+                    })
+                  ) : (
+                    <h2>No bids for now on this product.</h2>
+                  )}
                 </div>
               </div>
             </div>

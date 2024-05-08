@@ -64,7 +64,7 @@ export default function NotficationModal({
                       navigate(notification.onClick);
                       setShowNotificationsModal(false);
                     }}
-                    className=" cursor-pointer w-full rounded-lg bg-gray-200 p-5"
+                    className=" cursor-pointer w-full mb-8 rounded-lg bg-gray-200 p-5"
                   >
                     <p className="text-bold italic text-lg">
                       {notification?.title.toUpperCase() + ": "}

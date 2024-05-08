@@ -2,6 +2,8 @@ const router=require("express").Router();
 const Product=require("../models/productModel");
 const authMiddleware=require("../middleware/authMiddleware");
 const cloudinary=require("../config/cloudinaryConfig")
+const Notification=require("../models/notificationModels")
+const User=require("../models/users")
 const multer=require("multer")
 const fs=require("fs");
 const path=require("path")
@@ -10,6 +12,24 @@ router.post("/addproduct",authMiddleware,async (req,res)=>{
         
          const newProduct=new Product(req.body);
          await newProduct.save();
+
+
+        //send notitfication to all admins that new product has been added by some user allow, or reject it
+        const admins=await User.find({role:"admin"});
+
+        admins.forEach(async (admin)=>{
+            const newNotification=new Notification({
+                user:admin._id,
+                message:`New Product for approval`,
+                title:"New Product",
+                onClick:"/admin",
+                read:false,
+            })
+
+            await newNotification.save();
+        })
+
+
          res.send({
             success:true,
             message:"Product added successfully",
@@ -171,6 +191,8 @@ router.put("/update/:id",authMiddleware,async(req,res)=>{
      
       if(!updatedProduct) throw new Error("Product not found!");
 
+     
+
       res.send({
         success:true,
         message:"Product Updated Successfully!.",
@@ -281,7 +303,21 @@ router.put("/deleteimage/:id",authMiddleware,async (req,res)=>{
 router.put("/update-product-status/:id",authMiddleware,async (req,res)=>{
   try{
      const {Status}=req.body;
-     await Product.findByIdAndUpdate(req.params.id,{Status});
+     const updatedProduct=await Product.findByIdAndUpdate(req.params.id,{Status},{new:true});
+
+
+      //send notification to seller about product status update blocked,allowed or whatever
+      const newNotification=new Notification({
+        user:updatedProduct.Seller,
+        message:`Your product ${updatedProduct.Name} has been ${req.body.Status}`,
+        title:`Product Status Updated`,
+        onClick:"/profile",
+        read:false,
+      })
+
+      await newNotification.save();
+
+
      res.send({
         success:true,
         message:"Product status updated successfully."

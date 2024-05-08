@@ -64,69 +64,93 @@ export default function Home() {
             <div className="  space-y-3 py-4 lg:w-1/5 lg:px-4  lg:space-y-4  ">
               <h1 className=" text-xl mb-4  text-white"> Categories</h1>
               <a
-                onClick={() => setState({ ...state, Category: null })}
+                onClick={() => {
+                  setState({ ...state, Category: null });
+                  setFilters({ ...state, Category: null });
+                }}
                 className={`block font-medium text-gray-500 dark:text-gray-300 hover:underline ${
-                  state.Category === null ? "dark:text-blue-300" : ""
+                  state.Category === null ? "dark:text-sky-300" : ""
                 }  cursor-pointer`}
               >
                 All Products
               </a>
               <a
-                onClick={() => setState({ ...state, Category: "Electronics" })}
+                onClick={() => {
+                  setState({ ...state, Category: "Electronics" });
+                  setFilters({ ...state, Category: "Electronics" });
+                }}
                 className={`block font-medium text-gray-500 dark:text-gray-300 hover:underline
                 ${
-                  state.Category === "Electronics" ? "dark:text-blue-300" : ""
+                  state.Category === "Electronics" ? "dark:text-sky-300" : ""
                 }  cursor-pointer`}
               >
                 Electronics
               </a>
               <a
-                onClick={() => setState({ ...state, Category: "Automobile" })}
+                onClick={() => {
+                  setState({ ...state, Category: "Automobile" });
+                  setFilters({ ...state, Category: "Automobile" });
+                }}
                 className={`block font-medium text-gray-500 dark:text-gray-300 hover:underline ${
-                  state.Category === "Automobile" ? "dark:text-blue-300" : ""
+                  state.Category === "Automobile" ? "dark:text-sky-300" : ""
                 }  cursor-pointer`}
               >
                 Automobile
               </a>
               <a
-                onClick={() => setState({ ...state, Category: "Clothings" })}
+                onClick={() => {
+                  setState({ ...state, Category: "Clothings" });
+                  setFilters({ ...state, Category: "Clothings" });
+                }}
                 className={`block font-medium hover:underline text-gray-500 dark:text-gray-300 ${
-                  state.Category === "Clothings" ? "dark:text-blue-300" : ""
+                  state.Category === "Clothings" ? "dark:text-sky-300" : ""
                 }  cursor-pointer`}
               >
                 Clothings
               </a>
               <a
-                onClick={() => setState({ ...state, Category: "Books" })}
+                onClick={() => {
+                  setState({ ...state, Category: "Books" });
+                  setFilters({ ...state, Category: "Books" });
+                }}
                 className={`block font-medium text-gray-500 dark:text-gray-300 hover:underline
                 ${
-                  state.Category === "Books" ? "dark:text-blue-300" : ""
+                  state.Category === "Books" ? "dark:text-sky-300" : ""
                 }  cursor-pointer`}
               >
                 Books, Stationary & toys
               </a>
               <a
-                onClick={() => setState({ ...state, Category: "Furniture" })}
+                onClick={() => {
+                  setState({ ...state, Category: "Furniture" });
+                  setFilters({ ...state, Category: "Furniture" });
+                }}
                 className={`block font-medium text-gray-500 dark:text-gray-300 hover:underline ${
-                  state.Category === "Furniture" ? "dark:text-blue-300" : ""
+                  state.Category === "Furniture" ? "dark:text-sky-300" : ""
                 }  cursor-pointer`}
               >
                 {" "}
                 Furniture{" "}
               </a>
               <a
-                onClick={() => setState({ ...state, Category: "Fashion" })}
+                onClick={() => {
+                  setState({ ...state, Category: "Fashion" });
+                  setFilters({ ...state, Category: "Fashion" });
+                }}
                 className={`block font-medium text-gray-500 dark:text-gray-300 hover:underline
                 ${
-                  state.Category === "Fashion" ? "dark:text-blue-300" : ""
+                  state.Category === "Fashion" ? "dark:text-sky-300" : ""
                 }  cursor-pointer`}
               >
                 Fashion & Cosmetics
               </a>
               <a
-                onClick={() => setState({ ...state, Category: "others" })}
+                onClick={() => {
+                  setState({ ...state, Category: "others" });
+                  setFilters({ ...state, Category: "others" });
+                }}
                 className={`block font-medium text-gray-500 dark:text-gray-300 hover:underline ${
-                  state.Category === "others" ? "dark:text-blue-300" : ""
+                  state.Category === "others" ? "dark:text-sky-300" : ""
                 }  cursor-pointer`}
               >
                 Others
@@ -267,17 +291,17 @@ export default function Home() {
                                 {format.format(product.Price)}
                               </p>
                               <p className="text-blue-500">
-                                {product.Age + "yrs"}
+                                {product.Age > 1
+                                  ? product.Age + "yrs"
+                                  : product.Age + "yr"}
                               </p>
                             </div>
                             <p className="text-white">
-                              {-1 *
-                                Math.floor(
-                                  (new Date(product?.createdAt).getTime() -
-                                    new Date().getTime()) /
-                                    (1000 * 60 * 60 * 24)
-                                ) +
-                                " days ago"}
+                              {Math.floor(
+                                (new Date().getTime() -
+                                  new Date(product?.createdAt).getTime()) /
+                                  (1000 * 60 * 60 * 24)
+                              ) + " days ago"}
                             </p>
                           </div>
 
