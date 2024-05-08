@@ -32,7 +32,7 @@ router.post("/get-all-bids",authMiddleware,async(req,res)=>{
             filters.seller=seller
         }
         
-      const response=await Bid.find(filters).populate("product").populate("seller").populate("buyer");
+      const response=await Bid.find(filters).populate("product").populate("seller").populate("buyer").sort({createdAt:-1});
       res.send({success:true,data:response});
 
     }catch(err){

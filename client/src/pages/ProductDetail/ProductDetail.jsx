@@ -340,7 +340,7 @@ export default function ProductDetail() {
                   {product?.bids?.map((bid) => {
                     return (
                       <>
-                        <div className="w-full bg-[#f3f4f6] mt-2 h-20 bg-yellow-100 p-4 ">
+                        <div className="w-full bg-[#f3f4f6] mt-2 h-auto bg-yellow-100 p-4 ">
                           <div className="w-full flex flex-row justify-between">
                             <p>
                               {bid.buyer.firstname.charAt(0).toUpperCase() +
@@ -359,6 +359,10 @@ export default function ProductDetail() {
                                 options
                               )}
                             </p>
+                          </div>
+                          <div className="w-full flex flex-row justify-between">
+                            <p>Contact:</p>
+                            <p>{bid?.buyer.email}</p>
                           </div>
                         </div>
                       </>

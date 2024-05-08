@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { SetLoader } from "../redux/loaderSlice";
 import { PlaceNewBid } from "../../services/products";
+import { AddNotification } from "../../services/notifications";
 
 const initialState = {
   Message: "",
@@ -33,6 +34,18 @@ export default function BidModal({
       dispatch(SetLoader(false));
       if (response.success) {
         toast.success(response.message);
+
+        //send notifcation to seller
+        await AddNotification({
+          title: "New Bid Placed",
+          message: `A new bid has been placed on your product ${
+            product?.Name
+          } by ${user.firstname + " " + user.lastname} for ${state.Bid}`,
+          user: product.Seller._id,
+          onClick: "/profile",
+          read: false,
+        });
+
         getData();
         setShowProductForm(false);
       }
@@ -53,7 +66,7 @@ export default function BidModal({
       aria-hidden="true"
       className={`${
         !showProductForm ? "hidden" : " "
-      } overflow-y-auto overflow-x-hidden fixed  flex glassy z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}
+      } overflow-y-auto overflow-x-hidden fixed  flex glassy z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full`}
     >
       <div className="relative p-4 w-full max-w-2xl max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">

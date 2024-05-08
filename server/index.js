@@ -6,6 +6,7 @@ const dbConfig=require("./config/dbConfig")
 const userRoutes=require("./routes/userRoutes")
 const productRoutes=require("./routes/productRoutes")
 const bidsRoutes=require("./routes/bidsRoutes")
+const notificationRoutes=require("./routes/notificationRoutes")
 
 const PORT=process.env.PORT || 5000
 const cors=require("cors");
@@ -39,6 +40,7 @@ app.use(express.urlencoded({extended:false}))
 
 
 app.use("/api/users",userRoutes);
+app.use("/api/notifications",notificationRoutes)
 app.use("/api/products",productRoutes);
 app.use("/api/bids",bidsRoutes);
 

@@ -57,7 +57,7 @@ export default function AllBidsModal({
       aria-hidden="true"
       className={`${
         !showBidModal ? "hidden" : " "
-      } overflow-y-auto overflow-x-hidden fixed  flex glassy z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}
+      } overflow-y-auto overflow-x-hidden fixed  flex glassy z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full`}
     >
       <div className="relative p-4 w-full max-w-6xl max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
