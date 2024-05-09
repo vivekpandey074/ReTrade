@@ -11,11 +11,14 @@ const initialState = {
   Age: 100,
   Category: null,
   SortOrder: "RECENT",
+  SearchQuery: "",
 };
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [filters, setFilters] = useState({ Status: "approved" });
+  const [filters, setFilters] = useState({
+    Status: "approved",
+  });
   const [state, setState] = useState(initialState);
   const navigate = useNavigate();
 
@@ -234,13 +237,19 @@ export default function Home() {
                     <div className="relative">
                       <input
                         type="search"
+                        name="SearchQuery"
                         id="default-search"
+                        onChange={handleChange}
                         className="block w-full p-4 pr-12 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search..."
                         required
                       />
                       <button
                         type="submit"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setFilters(state);
+                        }}
                         className="absolute bg-blue-700 inset-y-2 end-0 mr-2 pr-2 rounded-lg  flex  flex-row items-center justify-center ps-3 cursor-pointer"
                       >
                         <svg

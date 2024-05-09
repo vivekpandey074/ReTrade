@@ -46,18 +46,34 @@ router.post("/addproduct",authMiddleware,async (req,res)=>{
 router.post("/getproducts",async (req,res)=>{
 
     try{
-        const {Status,Seller,Category,Age,Price,SortOrder}=req.body;
+        const {Status,Seller,Category,Age,Price,SortOrder,SearchQuery}=req.body;
         
         let filters={}
         let products=[];
     
       if(Age && Price){
         let pipelineObj={}
+        let SearchObj={}
         let sortObj={
             "$sort":{
                 'createdAt':-1,
             }
         }
+
+       if(SearchQuery!=""){
+         SearchObj=
+            {
+                '$match': {
+                  '$text':{
+                    '$search':SearchQuery
+                  }
+                }
+             }
+        
+       }
+
+
+
         switch (SortOrder) {
         case "PriceOrderLTH":
             sortObj= {
@@ -124,16 +140,20 @@ router.post("/getproducts",async (req,res)=>{
 
 
     }
-    products=await Product.aggregate([pipelineObj,sortObj])
+    if(SearchQuery!="") products=await Product.aggregate([SearchObj,pipelineObj,sortObj])
+   else  products=await Product.aggregate([pipelineObj,sortObj])
    
     
    
       }
     //   This else block run on initial use Effect run , when age & price are not set,once user click on filter or use sort dropdown Price and age will be set and above if block will run
       else{
-        if(Category){
-            filters.Category=Category;
-        }
+        
+       
+        
+        // if(Category){
+        //     filters.Category=Category;
+        // }
         
         if(Seller){
             //profile page will request based on seller
