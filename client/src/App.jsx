@@ -11,6 +11,11 @@ import { useSelector } from "react-redux";
 import Profile from "./pages/Profile/Profile";
 import Admin from "./pages/Admin/Admin";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
+import MyBids from "./components/MyBids";
+import NotFound from "./components/NotFound";
+import About from "./pages/About/About";
+import Contact from "./pages/Contact/Contact";
+import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 
 function App() {
   const { loading } = useSelector((state) => state.loaders);
@@ -29,10 +34,18 @@ function App() {
               }
             />
             <Route
-              path="/profile"
+              path="/Product"
               element={
                 <ProtectedPage>
                   <Profile />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/MyBids"
+              element={
+                <ProtectedPage>
+                  <MyBids />
                 </ProtectedPage>
               }
             />
@@ -52,8 +65,34 @@ function App() {
                 </ProtectedPage>
               }
             />
+            <Route
+              path="/about"
+              element={
+                <ProtectedPage>
+                  <About />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <ProtectedPage>
+                  <Contact />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/paymentsuccess"
+              element={
+                <ProtectedPage>
+                  <PaymentSuccess />
+                </ProtectedPage>
+              }
+            />
+
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Register />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </div>

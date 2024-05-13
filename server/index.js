@@ -7,11 +7,15 @@ const userRoutes=require("./routes/userRoutes")
 const productRoutes=require("./routes/productRoutes")
 const bidsRoutes=require("./routes/bidsRoutes")
 const notificationRoutes=require("./routes/notificationRoutes")
+const commentRoutes=require("./routes/commentRoutes")
+const paymentRoutes=require("./routes/paymentRoutes")
+
 
 const PORT=process.env.PORT || 5000
 const cors=require("cors");
 
 
+  
 
 const corsOptions = {
   origin:'http://localhost:5173',
@@ -41,11 +45,14 @@ app.use(express.urlencoded({extended:false}))
 
 app.use("/api/users",userRoutes);
 app.use("/api/notifications",notificationRoutes)
+app.use("/api/comments",commentRoutes)
 app.use("/api/products",productRoutes);
 app.use("/api/bids",bidsRoutes);
-
+app.use("/api/payment",paymentRoutes)
 
 
 app.listen(PORT,()=>{
     console.log("Server Started Successfully");
 })
+
+

@@ -27,6 +27,10 @@ export default function AllBidsModal({
 }) {
   const dispatch = useDispatch();
   const [bidsData, setBidsData] = useState([]);
+  let format = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
 
   const getData = async () => {
     try {
@@ -112,7 +116,9 @@ export default function AllBidsModal({
                               " " +
                               bid.buyer.lastname.toUpperCase()}
                           </td>
-                          <td className="px-6 py-4">{bid.Bid}</td>
+                          <td className="px-6 py-4">
+                            {format.format(bid.Bid)}
+                          </td>
                           <td className="px-6 py-4">
                             {new Date(bid.createdAt).toLocaleDateString(
                               "en-US",

@@ -331,7 +331,7 @@ router.put("/update-product-status/:id",authMiddleware,async (req,res)=>{
         user:updatedProduct.Seller,
         message:`Your product ${updatedProduct.Name} has been ${req.body.Status}`,
         title:`Product Status Updated`,
-        onClick:"/profile",
+        onClick:"/Product",
         read:false,
       })
 

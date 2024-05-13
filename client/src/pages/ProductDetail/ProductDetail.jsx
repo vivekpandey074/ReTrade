@@ -5,7 +5,11 @@ import { GetAllBids, GetProductById } from "../../../services/products";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import defaultPoster from "../../assets/no-image.jpg";
+import { TbCertificate } from "react-icons/tb";
 import BidModal from "../../components/BidModal";
+import Comments from "../../components/Comments";
+import { GetAllComments } from "../../../services/comments";
+import { CheckoutHandler, GetProductSoldOut } from "../../../services/payment";
 
 const options = {
   year: "numeric", // e.g., 2024
@@ -18,6 +22,8 @@ const options = {
 export default function ProductDetail() {
   const [product, SetProduct] = useState(null);
   const [index, setIndex] = useState(0);
+
+  const [tab, setTab] = useState(1);
   const [showProductForm, setShowProductForm] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
@@ -35,8 +41,37 @@ export default function ProductDetail() {
       dispatch(SetLoader(false));
       if (response.success) {
         const bidsReponse = await GetAllBids({ product: id });
+        const commentResponse = await GetAllComments({ product: id });
+        let getSoldOut = await GetProductSoldOut({ product: id });
+        console.log(getSoldOut);
+        if (!getSoldOut.success) {
+          getSoldOut = false;
+        } else {
+          getSoldOut = true;
+        }
 
-        SetProduct({ ...response.data, bids: bidsReponse.data });
+        SetProduct({
+          ...response.data,
+          bids: bidsReponse.data,
+          comments: commentResponse.data,
+          soldOut: getSoldOut,
+        });
+      }
+    } catch (err) {
+      dispatch(SetLoader(false));
+      toast.error(err.message);
+    }
+  };
+
+  const handleBuy = async (amount) => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await CheckoutHandler(amount, user, id);
+      dispatch(SetLoader(false));
+      if (response.success) {
+        console.log(response.data);
+      } else {
+        throw new Error(response.message);
       }
     } catch (err) {
       dispatch(SetLoader(false));
@@ -101,65 +136,9 @@ export default function ProductDetail() {
               </h1>
 
               <div className="mt-5 flex items-center">
-                <div className="flex items-center">
-                  <svg
-                    className="block h-4 w-4 align-middle text-yellow-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                      className=""
-                    ></path>
-                  </svg>
-                  <svg
-                    className="block h-4 w-4 align-middle text-yellow-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                      className=""
-                    ></path>
-                  </svg>
-                  <svg
-                    className="block h-4 w-4 align-middle text-yellow-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                      className=""
-                    ></path>
-                  </svg>
-                  <svg
-                    className="block h-4 w-4 align-middle text-yellow-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                      className=""
-                    ></path>
-                  </svg>
-                  <svg
-                    className="block h-4 w-4 align-middle text-yellow-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                      className=""
-                    ></path>
-                  </svg>
-                </div>
+                <TbCertificate color="orange" size={40} />
                 <p className="ml-2 text-sm font-medium text-gray-500">
-                  1,209 Reviews
+                  ReTrade Certified
                 </p>
                 <p className="ml-2 text-sm font-medium text-gray-500">
                   {"Added On: " +
@@ -230,6 +209,8 @@ export default function ProductDetail() {
 
                 <button
                   type="button"
+                  disabled={product?.soldOut}
+                  onClick={() => handleBuy(product?.Price)}
                   className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800"
                 >
                   <svg
@@ -246,7 +227,7 @@ export default function ProductDetail() {
                       d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                     />
                   </svg>
-                  Buy now
+                  {product?.soldOut ? "Sold Out" : "Buy now"}
                 </button>
               </div>
 
@@ -292,87 +273,112 @@ export default function ProductDetail() {
             </div>
 
             <div className="lg:col-span-3  ">
-              <div className="border-b border-gray-300 ">
+              <div className="border-b border-gray-300 cursor-pointer ">
                 <nav className="flex gap-4">
-                  <a
-                    href="#"
-                    title=""
-                    className="border-b-2 border-gray-900 py-4 text-sm font-medium text-gray-900 hover:border-gray-400 hover:text-gray-800"
+                  <div
+                    onClick={() => setTab(1)}
+                    className={`inline-flex border-gray-900 py-4 text-sm font-medium text-gray-900 hover:border-gray-400 hover:text-gray-800 ${
+                      tab === 1 ? "border-b-2" : " "
+                    }`}
                   >
                     {" "}
                     BIDS{" "}
-                  </a>
+                    <span className="ml-2 block rounded-full bg-gray-500 px-2 py-px text-xs font-bold text-gray-100">
+                      {" "}
+                      {product?.bids?.length}{" "}
+                    </span>
+                  </div>
 
-                  <a
-                    href="#"
-                    title=""
-                    className="inline-flex items-center border-b-2 border-transparent py-4 text-sm font-medium text-gray-600"
+                  <div
+                    onClick={() => setTab(2)}
+                    className={`inline-flex items-center   border-gray-900  py-4 text-sm font-medium text-gray-900 ${
+                      tab === 2 ? "border-b-2" : ""
+                    }`}
                   >
                     Comments
                     <span className="ml-2 block rounded-full bg-gray-500 px-2 py-px text-xs font-bold text-gray-100">
                       {" "}
-                      1,209{" "}
+                      {product?.comments?.length}{" "}
                     </span>
-                  </a>
+                  </div>
                 </nav>
               </div>
 
               <div className="mt-8 flow-root">
-                <div className="flex flex-row w-full justify-between">
-                  <h1 className="text-3xl font-bold">
-                    {product?.Seller._id === user._id
-                      ? "All bids for product"
-                      : "Place your bid for product"}
-                  </h1>
+                {tab == 1 ? (
+                  <>
+                    {" "}
+                    <div className="flex flex-row w-full justify-between">
+                      <h1 className="text-3xl font-bold">
+                        {product?.Seller._id === user._id
+                          ? "All bids for product"
+                          : "Place your bid for product"}
+                      </h1>
 
-                  <button
-                    type="button"
-                    onClick={() => setShowProductForm(true)}
-                    className={`${
-                      product?.Seller._id === user._id ? "hidden" : ""
-                    } inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800`}
-                  >
-                    Place bid
-                  </button>
-                </div>
-                {/* bids */}
-                <div className="w-full mt-4 h-40 border-2 border-dashed border-black overflow-scroll no-scrollbar p-3">
-                  {product?.bids.length > 0 ? (
-                    product?.bids?.map((bid) => {
-                      return (
-                        <>
-                          <div className="w-full bg-[#f3f4f6] mt-2 h-auto bg-yellow-100 p-4 ">
-                            <div className="w-full flex flex-row justify-between">
-                              <p>
-                                {bid.buyer.firstname.charAt(0).toUpperCase() +
-                                  bid.buyer.firstname.slice(1).toLowerCase() +
-                                  " " +
-                                  bid?.buyer.lastname.charAt(0).toUpperCase() +
-                                  bid?.buyer.lastname.slice(1).toLowerCase()}
-                              </p>
-                              <p>{format.format(bid.Bid)}</p>
-                            </div>
-                            <div className="w-full flex flex-row justify-between">
-                              <p>Placed On</p>
-                              <p>
-                                {new Date(bid.createdAt).toLocaleDateString(
-                                  "en-US",
-                                  options
-                                )}
-                              </p>
-                            </div>
-                            <div className="w-full flex flex-row justify-between">
-                              <p>Contact:</p>
-                              <p>{bid?.buyer.email}</p>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    })
-                  ) : (
-                    <h2>No bids for now on this product.</h2>
-                  )}
-                </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowProductForm(true)}
+                        className={`${
+                          product?.Seller._id === user._id ? "hidden" : ""
+                        } inline-flex items-center  justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800`}
+                      >
+                        Place bid
+                      </button>
+                    </div>
+                    {/* bids */}
+                    <div className="w-full mt-4 h-40 border-2 border-dashed border-black overflow-scroll no-scrollbar p-3">
+                      {product?.bids.length > 0 ? (
+                        product?.bids?.map((bid) => {
+                          return (
+                            <>
+                              <div className="w-full bg-[#f3f4f6] mt-2 h-auto bg-yellow-100 p-4 ">
+                                <div className="w-full flex flex-row justify-between">
+                                  <p>
+                                    {bid.buyer.firstname
+                                      .charAt(0)
+                                      .toUpperCase() +
+                                      bid.buyer.firstname
+                                        .slice(1)
+                                        .toLowerCase() +
+                                      " " +
+                                      bid?.buyer.lastname
+                                        .charAt(0)
+                                        .toUpperCase() +
+                                      bid?.buyer.lastname
+                                        .slice(1)
+                                        .toLowerCase()}
+                                  </p>
+                                  <p>{format.format(bid.Bid)}</p>
+                                </div>
+                                <div className="w-full flex flex-row justify-between">
+                                  <p>Placed On</p>
+                                  <p>
+                                    {new Date(bid.createdAt).toLocaleDateString(
+                                      "en-US",
+                                      options
+                                    )}
+                                  </p>
+                                </div>
+                                <div className="w-full flex flex-row justify-between">
+                                  <p>Contact:</p>
+                                  <p>{bid?.buyer.email}</p>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        })
+                      ) : (
+                        <h2>No bids for now on this product.</h2>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <Comments
+                    comments={product?.comments}
+                    getData={getData}
+                    productId={id}
+                  />
+                )}
               </div>
             </div>
           </div>

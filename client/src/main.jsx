@@ -9,3 +9,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <App />
   </Provider>
 );
+
+// 1RAmenoJY20I7bruGgMQJjhX   Razor pay APi secret
+//rzp_test_IIiZ1jwzJuuz6k api key

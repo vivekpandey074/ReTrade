@@ -7,7 +7,7 @@ export const AddProduct=async (payload)=>{
        return response.data;
 
     }catch(err){
-       return err.message;
+       return err
     }
 }
 
@@ -17,7 +17,7 @@ export const GetAllProducts=async (filters)=>{
         return response.data;
 
     }catch(err){
-        return err.message;
+        return err
     }
 }
 
@@ -28,7 +28,7 @@ export const DeleteProduct=async(id)=>{
           return response.data;
     }
     catch(err){
-      return err.message;
+      return err
     }
 
 }
@@ -41,7 +41,7 @@ export const updateProduct=async (product)=>{
          return response.data;
       }
     catch(err){
-        return err.message;
+        return err
     }
 }
 
@@ -57,7 +57,7 @@ export const UploadProductImage=async (product,formData)=>{
 
 
   }catch(err){
-   return err.message
+   return err
   }
 }
 
@@ -71,7 +71,7 @@ try {
 
     return response.data;
 } catch (err) {
-    return err.message
+    return err
 }
 }
 
@@ -82,7 +82,7 @@ export const UpdateProductStatus=async (id,Status)=>{
         return response.data;
 
     }catch(err){
-        return err.message;
+        return err
     }
 
 }
@@ -118,6 +118,7 @@ catch(err){
 
 
 export const GetAllBids=async(filters)=>{
+  
     try{
         const response=await axiosInstance.post(
             "/api/bids/get-all-bids",

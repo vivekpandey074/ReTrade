@@ -42,7 +42,7 @@ export default function BidModal({
             product?.Name
           } by ${user.firstname + " " + user.lastname} for ${state.Bid}`,
           user: product.Seller._id,
-          onClick: "/profile",
+          onClick: "/Product",
           read: false,
         });
 
