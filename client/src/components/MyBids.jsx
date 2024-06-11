@@ -60,7 +60,7 @@ export default function MyBids() {
           <i className="fas fa-space-shuttle text-base mr-1"></i>My Bids
         </div>
       </div>
-      <div className="relative overflow-x-auto">
+      <div className="relative overflow-x-auto  dark:bg-gray-800 ">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -110,7 +110,7 @@ export default function MyBids() {
                 );
               })
             ) : (
-              <h1 className="text-white ml-4 mt-4">
+              <h1 className="text-white p-4">
                 No Bids has been placed till now.
               </h1>
             )}

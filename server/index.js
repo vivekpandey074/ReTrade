@@ -50,6 +50,16 @@ app.use("/api/products",productRoutes);
 app.use("/api/bids",bidsRoutes);
 app.use("/api/payment",paymentRoutes)
 
+// deployment config
+const path = require("path");
+__dirname = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.listen(PORT,()=>{
     console.log("Server Started Successfully");

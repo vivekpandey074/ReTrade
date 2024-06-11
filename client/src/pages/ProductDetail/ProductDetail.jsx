@@ -211,7 +211,9 @@ export default function ProductDetail() {
                   type="button"
                   disabled={product?.soldOut}
                   onClick={() => handleBuy(product?.Price)}
-                  className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800"
+                  className={`${
+                    product?.Seller._id === user._id ? "hidden" : ""
+                  } inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

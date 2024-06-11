@@ -59,8 +59,8 @@ export default function TabsRender({ choice, columns, getData }) {
   };
 
   return (
-    <div>
-      <div className="relative h-full dark:bg-gray-900  flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+    <>
+      <div className="relative h-full dark:bg-gray-800   flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
         <div className="px-4 py-5 flex-auto ">
           <div className="tab-content tab-space">
             <div className="block" id="tab-profile">
@@ -83,60 +83,64 @@ export default function TabsRender({ choice, columns, getData }) {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => {
-                return (
-                  <>
-                    {" "}
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                      <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {product.Name}
-                      </th>
-                      <td className="px-6 py-4">{product.Description}</td>
-                      <td className="px-6 py-4">
-                        {format.format(product.Price)}
-                      </td>
-                      <td className="px-6 py-4">{product.Category}</td>
-                      <td className="px-6 py-4">{product.Age}</td>
-                      <td className="px-6 py-4">{product.Status}</td>
-                      <td className="px-6 py-4">
-                        {new Date(product.createdAt).toLocaleDateString(
-                          "en-US",
-                          options
-                        )}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex flex-row justify-between">
-                          {" "}
-                          <FaEdit
-                            size={20}
-                            onClick={() => {
-                              toggleModal(product);
-                            }}
-                            style={{ cursor: "pointer" }}
-                          />
-                          <MdDelete
-                            size={22}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleDelete(product)}
-                          />
-                          <span
-                            onClick={() => {
-                              setCurrentSelectedProduct(product);
-                              setShowBidModal(true);
-                            }}
-                            className="underline ml-2 cursor-pointer"
-                          >
-                            Show Bids
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  </>
-                );
-              })}
+              {products.length > 0 ? (
+                products.map((product) => {
+                  return (
+                    <>
+                      {" "}
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          {product.Name}
+                        </th>
+                        <td className="px-6 py-4">{product.Description}</td>
+                        <td className="px-6 py-4">
+                          {format.format(product.Price)}
+                        </td>
+                        <td className="px-6 py-4">{product.Category}</td>
+                        <td className="px-6 py-4">{product.Age}</td>
+                        <td className="px-6 py-4">{product.Status}</td>
+                        <td className="px-6 py-4">
+                          {new Date(product.createdAt).toLocaleDateString(
+                            "en-US",
+                            options
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex flex-row justify-between">
+                            {" "}
+                            <FaEdit
+                              size={20}
+                              onClick={() => {
+                                toggleModal(product);
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
+                            <MdDelete
+                              size={22}
+                              style={{ cursor: "pointer" }}
+                              onClick={() => handleDelete(product)}
+                            />
+                            <span
+                              onClick={() => {
+                                setCurrentSelectedProduct(product);
+                                setShowBidModal(true);
+                              }}
+                              className="underline ml-2 cursor-pointer"
+                            >
+                              Show Bids
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    </>
+                  );
+                })
+              ) : (
+                <h1 className="p-4">No products till now....</h1>
+              )}
             </tbody>
           </table>
         </div>
@@ -156,6 +160,6 @@ export default function TabsRender({ choice, columns, getData }) {
         setShowBidModal={setShowBidModal}
         currentSelectedProduct={currentSelectedProduct}
       />
-    </div>
+    </>
   );
 }
