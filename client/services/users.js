@@ -26,7 +26,7 @@ export const RegisterUser=async (payload)=>{
 export const LoginUser=async (payload)=>{
     try{
   
-    const response=await axiosInstance.post("https://retrade-7ttv.onrender.com/api/users/login",{
+    const response=await axiosInstance.post("/api/users/login",{
       email:payload.email,
       password:payload.password
     });
