@@ -6,11 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api':'https://retrade-7ttv.onrender.com',
-    // {target:'https://retrade-7ttv.onrender.com',
-    // changeOrigin: true,
-    // secure: false,
-    // }
+      '/api':
+    {target:'https://retrade-7ttv.onrender.com',
+    changeOrigin: true,
+    secure: false,
+    }
   
   },
   },
