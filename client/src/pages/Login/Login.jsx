@@ -36,11 +36,11 @@ export default function Login() {
         localStorage.setItem("token", response.token);
         window.location.href = "/";
       } else {
-        throw new Error(response.message);
+        toast.error(response.message);
       }
     } catch (err) {
       dispatch(SetLoader(false));
-      return toast.error(`${err}`, {
+      toast.error(`${err.message}`, {
         position: "top-right",
       });
     }

@@ -33,7 +33,7 @@ export const LoginUser=async (payload)=>{
     return response.data;
     }
     catch(error){
-      return error.message;
+      return error;
     }
 }
 

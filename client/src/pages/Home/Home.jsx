@@ -51,7 +51,7 @@ export default function Home() {
       }
     } catch (err) {
       dispatch(SetLoader(false));
-      toast.success(err.message);
+      toast.error(err.message);
     }
   };
 
