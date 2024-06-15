@@ -18,8 +18,8 @@ const cors=require("cors");
   
 
 const corsOptions = {
-  // origin:'https://retrade-1.onrender.com',
-  origin:'http://localhost:5173',
+  origin:'https://retrade-1.onrender.com',
+  // origin:'http://localhost:5173',
   credential:true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Authorization', 'Content-Type'],
