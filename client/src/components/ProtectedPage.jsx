@@ -17,6 +17,7 @@ export default function ProtectedPage({ children }) {
   const { user } = useSelector((state) => state.users);
   const [notifications = [], setNotifications] = useState([]);
   const [showNotificationsModal, setShowNotificationsModal] = useState(false);
+  const [showNav, setShowNav] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const validateToken = async () => {
@@ -92,7 +93,7 @@ export default function ProtectedPage({ children }) {
         {user && (
           <div>
             <nav className="bg-white border-gray-200 py-2.5 cursor-pointer dark:bg-gray-900  ">
-              <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto ">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between max-w-screen-xl px-4 mx-auto ">
                 <a className="flex items-center">
                   <img
                     src={logo}
@@ -108,7 +109,7 @@ export default function ProtectedPage({ children }) {
                     ReTrade
                   </span>
                 </a>
-                <div className="flex items-center lg:order-2">
+                <div className="flex mt-4 sm:mt-0 items-center justify-between sm:justify-start lg:order-2">
                   <div className="hidden mt-2 mr-4 sm:inline-block">
                     <span></span>
                   </div>
@@ -139,7 +140,7 @@ export default function ProtectedPage({ children }) {
                         d="M15.585 15.5H5.415A1.65 1.65 0 0 1 4 13a10.526 10.526 0 0 0 1.5-5.415V6.5a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v1.085c0 1.907.518 3.78 1.5 5.415a1.65 1.65 0 0 1-1.415 2.5zm1.915-11c-.267-.934-.6-1.6-1-2s-1.066-.733-2-1m-10.912 3c.209-.934.512-1.6.912-2s1.096-.733 2.088-1M13 17c-.667 1-1.5 1.5-2.5 1.5S8.667 18 8 17"
                       />
                     </svg>
-                    <div className="px-1 bg-teal-500 rounded-full text-center text-white text-sm absolute -top-3 -end-2">
+                    <div className=" px-1 bg-teal-500 rounded-full text-center text-white text-sm absolute -top-3 -end-2">
                       {notifications?.filter(
                         (notification) => !notification.read
                       ).length > 0
@@ -147,18 +148,9 @@ export default function ProtectedPage({ children }) {
                             (notification) => !notification.read
                           ).length
                         : " "}
-                      <div className="absolute top-0 start-0 rounded-full -z-10 animate-ping bg-teal-200 w-full h-full"></div>
+                      <div className="absolute  top-0 start-0 rounded-full -z-10 animate-ping bg-teal-200 w-full h-full"></div>
                     </div>
                   </div>
-                  <a
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      navigate("/login");
-                    }}
-                    className="text-white mx-3 bg-purple-700 hover:bg-purple-800 focus:ring-4  focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800"
-                  >
-                    Logout
-                  </a>
                   <a
                     onClick={() => {
                       if (user.role === "admin") {
@@ -167,21 +159,32 @@ export default function ProtectedPage({ children }) {
                         navigate("/Product");
                       }
                     }}
-                    className="text-white mx-3 bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800"
+                    className="grow sm:grow-0 text-white mx-3 bg-purple-700 hover:bg-purple-800 focus:ring-4  focus:ring-purple-300 font-medium rounded-lg text-[10px] sm:text-sm px-2 m:px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800"
                   >
                     {user.firstname.charAt(0).toUpperCase() +
                       user.firstname.slice(1)}
                   </a>
+                  <a
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      navigate("/login");
+                    }}
+                    className="grow sm:grow-0 text-white mx-3 bg-purple-700 hover:bg-purple-800 focus:ring-4  focus:ring-purple-300 font-medium rounded-lg text-[10px] sm:text-sm px-2 m:px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800"
+                  >
+                    Logout
+                  </a>
+
                   <button
                     data-collapse-toggle="mobile-menu-2"
                     type="button"
                     className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                     aria-controls="mobile-menu-2"
                     aria-expanded="true"
+                    onClick={() => setShowNav(!showNav)}
                   >
                     <span className="sr-only">Open main menu</span>
                     <svg
-                      className="w-6 h-6"
+                      className={`${showNav ? "hidden" : ""} w-6 h-6`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +196,7 @@ export default function ProtectedPage({ children }) {
                       ></path>
                     </svg>
                     <svg
-                      className="hidden w-6 h-6"
+                      className={`${showNav ? "" : "hidden"}  w-6 h-6`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +210,9 @@ export default function ProtectedPage({ children }) {
                   </button>
                 </div>
                 <div
-                  className="items-center justify-between w-full lg:flex lg:w-auto lg:order-1"
+                  className={` ${
+                    showNav ? " " : "hidden"
+                  } items-center justify-between w-full lg:flex lg:w-auto lg:order-1`}
                   id="mobile-menu-2"
                 >
                   <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">

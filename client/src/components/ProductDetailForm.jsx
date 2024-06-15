@@ -162,7 +162,7 @@ export default function ProductDetailForm({
                 *Product description is required
               </span>
             </div>
-            <div className="mt-4 flex justify-between">
+            <div className="mt-4 flex flex-col sm:flex-row  justify-between">
               <div>
                 {" "}
                 <div className="flex justify-between">

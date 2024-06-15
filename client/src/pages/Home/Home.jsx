@@ -5,6 +5,7 @@ import { GetAllProducts } from "../../../services/products";
 import { toast } from "react-toastify";
 import defaultPoster from "../../assets/no-image.jpg";
 import { useNavigate } from "react-router-dom";
+import { FaFilter } from "react-icons/fa";
 
 const initialState = {
   Price: 10000000,
@@ -20,6 +21,7 @@ export default function Home() {
     Status: "approved",
   });
   const [state, setState] = useState(initialState);
+  const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
 
   let format = new Intl.NumberFormat("en-IN", {
@@ -63,8 +65,43 @@ export default function Home() {
     <div>
       <section className="bg-white dark:bg-gray-900 ">
         <div className="container px-6 py-8 mx-auto ">
-          <div className="lg:flex lg:-mx-2">
-            <div className="  space-y-3 py-4 lg:w-1/5 lg:px-4  lg:space-y-4  ">
+          <div className=" lg:flex lg:-mx-2">
+            {showFilter ? (
+              <div
+                className="bg-blue-400
+             h-8 flex sm:hidden justify-between p-2 items-center gap-2"
+              >
+                <FaFilter color="white" />
+                <h1>Collapse Filter</h1>
+                <svg
+                  className={` w-6 h-6`}
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={() => setShowFilter(false)}
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            ) : (
+              <div
+                className="bg-blue-400
+             h-8 flex sm:hidden  p-2 items-center gap-2"
+                onClick={() => setShowFilter(true)}
+              >
+                <FaFilter color="white" />
+                <h1>Show Filter</h1>
+              </div>
+            )}
+            <div
+              className={`${
+                showFilter ? "" : "hidden"
+              } lg:flex flex-col space-y-3 py-4 lg:w-1/5 lg:px-4  lg:space-y-4 `}
+            >
               <h1 className=" text-xl mb-4  text-white"> Categories</h1>
               <a
                 onClick={() => {
@@ -209,12 +246,12 @@ export default function Home() {
             </div>
 
             <div className="mt-6 lg:mt-0 lg:px-2 lg:w-4/5 ">
-              <div className="flex items-center justify-between text-sm tracking-widest uppercase ">
+              <div className="flex flex-col gap-2 sm:gap-0 sm:flex-row sm:items-center sm:justify-between text-sm tracking-widest uppercase ">
                 <p className="text-gray-500 dark:text-gray-300">
                   {products.length} Items
                 </p>
 
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-col sm:flex-row gap-4">
                   {" "}
                   <select
                     id="countries"

@@ -66,7 +66,7 @@ export default function BidModal({
       aria-hidden="true"
       className={`${
         !showProductForm ? "hidden" : " "
-      } overflow-y-auto overflow-x-hidden fixed  flex glassy z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full`}
+      } overflow-y-auto overflow-x-hidden fixed  flex glassy z-50 justify-center items-center w-full inset-0 h-[calc(100%)] max-h-full`}
     >
       <div className="relative p-4 w-full max-w-2xl max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">

@@ -56,7 +56,7 @@ export default function Comments({ comments = [], getData, productId }) {
         <button
           type="button"
           onClick={handleSubmit}
-          className={`my-2 inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800`}
+          className={`my-2 inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-4 py-2 sm:px-12 sm:py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800`}
         >
           Commment
         </button>

@@ -61,10 +61,10 @@ export default function AllBidsModal({
       aria-hidden="true"
       className={`${
         !showBidModal ? "hidden" : " "
-      } overflow-y-auto overflow-x-hidden fixed  flex glassy z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full`}
+      } overflow-y-auto overflow-x-hidden fixed  flex glassy z-50 justify-center items-center w-full inset-0 h-[calc(100%)] max-h-full`}
     >
       <div className="relative p-4 w-full max-w-6xl max-h-full">
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div className="relative  bg-white rounded-lg shadow dark:bg-gray-700">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
               Bids:{` ${currentSelectedProduct?.Name}`}
@@ -93,7 +93,7 @@ export default function AllBidsModal({
           </div>
           {/* modal body */}
           <div className="flex bg-white rounded-lg shadow-lg  mx-auto max-w-sm p-8 lg:max-w-6xl   w-full ">
-            <div className="h-72 w-full border-4 border-black-300  ">
+            <div className="h-72 overflow-scroll w-full border-4 border-black-300  ">
               <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>

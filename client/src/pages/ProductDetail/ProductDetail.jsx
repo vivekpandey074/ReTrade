@@ -104,7 +104,7 @@ export default function ProductDetail() {
                   </div>
                 </div>
 
-                <div className="mt-2 w-full lg:order-1 lg:w-32 lg:flex-shrink-0 h-80 overflow-y-scroll  scrollable-element">
+                <div className="mt-2 w-full lg:order-1 lg:w-32 lg:flex-shrink-0 sm:h-80 overflow-y-scroll  scrollable-element">
                   <div className="flex flex-row items-start lg:flex-col">
                     {product?.Images?.map((image, index) => {
                       return (
@@ -311,7 +311,7 @@ export default function ProductDetail() {
                   <>
                     {" "}
                     <div className="flex flex-row w-full justify-between">
-                      <h1 className="text-3xl font-bold">
+                      <h1 className=" text-xl sm:text-3xl font-bold">
                         {product?.Seller._id === user._id
                           ? "All bids for product"
                           : "Place your bid for product"}
@@ -322,7 +322,7 @@ export default function ProductDetail() {
                         onClick={() => setShowProductForm(true)}
                         className={`${
                           product?.Seller._id === user._id ? "hidden" : ""
-                        } inline-flex items-center  justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800`}
+                        } inline-flex items-center  justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-4 py-1 sm:px-12 sm:py-3 mx-1 text-center text-[14px] sm:text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800`}
                       >
                         Place bid
                       </button>
